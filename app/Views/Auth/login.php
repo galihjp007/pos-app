@@ -40,15 +40,15 @@
                                         <hr />
                                     </div>
                                     <div class="form-body">
-                                        <form class="row g-3">
+                                        <form class="row g-3" id="form-login">
                                             <div class="col-12">
                                                 <label for="inputEmailAddress" class="form-label">Username</label>
-                                                <input type="text" class="form-control" id="inputEmailAddress" placeholder="Enter Username">
+                                                <input type="text" class="form-control" id="inputEmailAddress" name="username" placeholder="Enter Username" required>
                                             </div>
                                             <div class="col-12">
                                                 <label for="inputChoosePassword" class="form-label">Enter Password</label>
                                                 <div class="input-group" id="show_hide_password">
-                                                    <input type="password" class="form-control border-end-0" id="inputChoosePassword" placeholder="Enter Password"> <a href="javascript:;" class="input-group-text bg-transparent"><i class='bx bx-hide'></i></a>
+                                                    <input type="password" class="form-control border-end-0" id="password" placeholder="Enter Password" name="password" required> <a href="javascript:;" class="input-group-text bg-transparent"><i class='bx bx-hide'></i></a>
                                                 </div>
                                             </div>
                                             <div class="col-12">
@@ -93,6 +93,23 @@
                     $('#show_hide_password i').addClass("bx-show");
                 }
             });
+            $('#form-login').submit(function(e) {
+                e.preventDefault()
+                var form = $(this).serialize();
+                $.ajax({
+                    type: "POST",
+                    url: "<?= base_url('/login') ?>",
+                    data: form,
+                    success: function(data) {
+                        if (data.status != 'error') {
+                            window.location.href = '<?= base_url('dashboard') ?>';
+                        } else {
+                            alert(data.message)
+                            $('#password').val('')
+                        }
+                    }
+                })
+            })
         });
     </script>
     <!--app JS-->
